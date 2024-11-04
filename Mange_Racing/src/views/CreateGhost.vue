@@ -1,39 +1,119 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-const currentDate = ref('');
-const currentIndex = ref(0);
+//parte da frente
+const frenteCurrentDate = ref('');
+const frenteCurrentIndex = ref(0);
 const frenteIMG = ref([
   { img: '/Frente-1.png', title: 'Cross Rider' },
   { img: '/Frente-2.png', title: 'Cross Rider' },
   { img: '/Frente-3.png', title: 'Cross Rider' },
 ]);
 
-const next = () => {
-  if (currentIndex.value < frenteIMG.value.length - 1) {
-    currentIndex.value++;
+const frenteNext = () => {
+  if (frenteCurrentIndex.value < frenteIMG.value.length - 1) {
+    frenteCurrentIndex.value++;
   } else {
-    currentIndex.value = 0; // Volta ao início
+    frenteCurrentIndex.value = 0; // Volta ao início
   }
 };
 
-const prev = () => {
-  if (currentIndex.value > 0) {
-    currentIndex.value--;
+const frentePrev = () => {
+  if (frenteCurrentIndex.value > 0) {
+    frenteCurrentIndex.value--;
   } else {
-    currentIndex.value = frenteIMG.value.length - 1; // Volta ao final
+    frenteCurrentIndex.value = frenteIMG.value.length - 1; // Volta ao final
+  }
+};
+
+// parte do motor 
+
+const motorCurrentDate = ref('');
+const motorCurrentIndex = ref(0);
+const motorIMG = ref([
+  { img: '/Motor-1.png', title: 'Cross Rider' },
+  { img: '/Motor-2.png', title: 'Cross Rider' },
+  { img: '/Motor-3.png', title: 'Cross Rider' },
+]);
+
+const motorNext = () => {
+  if (motorCurrentIndex.value < motorIMG.value.length - 1) {
+    motorCurrentIndex.value++;
+  } else {
+    motorCurrentIndex.value = 0; // Volta ao início
+  }
+};
+
+const motorPrev = () => {
+  if (motorCurrentIndex.value > 0) {
+    motorCurrentIndex.value--;
+  } else {
+    motorCurrentIndex.value = motorIMG.value.length - 1; // Volta ao final
+  }
+};
+
+//rodaFrente
+
+const rodaFrenteCurrentDate = ref('');
+const rodaFrenteCurrentIndex = ref(0);
+const rodaFrenteIMG = ref([
+  { img: '/RodaFrente-1.png', title: 'Cross Rider' },
+  { img: '/RodaFrente-2.png', title: 'Cross Rider' },
+  { img: '/RodaFrente-3.png', title: 'Cross Rider' },
+]);
+
+const rodaFrenteNext = () => {
+  if (rodaFrenteCurrentIndex.value <rodaFrenteIMG.value.length - 1) {
+    rodaFrenteCurrentIndex.value++;
+  } else {
+    rodaFrenteCurrentIndex.value = 0; // Volta ao início
+  }
+};
+
+const rodaFrentePrev = () => {
+  if (rodaFrenteCurrentIndex.value > 0) {
+    rodaFrenteCurrentIndex.value--;
+  } else {
+    rodaFrenteCurrentIndex.value = rodaFrenteIMG.value.length - 1; // Volta ao final
+  }
+};
+
+//rodaTraseira
+
+const rodaTraseiraCurrentDate = ref('');
+const rodaTraseiraCurrentIndex = ref(0);
+const rodaTraseiraIMG = ref([
+  { img: '/RodaTraseira-1.png', title: 'Cross Rider' },
+  { img: '/RodaTraseira-2.png', title: 'Cross Rider' },
+  { img: '/RodaTraseira-4.png', title: 'Cross Rider' },
+]);
+
+const rodaTraseiraNext = () => {
+  if (rodaTraseiraCurrentIndex.value <rodaTraseiraIMG.value.length - 1) {
+    rodaTraseiraCurrentIndex.value++;
+  } else {
+    rodaTraseiraCurrentIndex.value = 0; // Volta ao início
+  }
+};
+
+const rodaTraseiraPrev = () => {
+  if (rodaTraseiraCurrentIndex.value > 0) {
+    rodaTraseiraCurrentIndex.value--;
+  } else {
+    rodaTraseiraCurrentIndex.value = rodaTraseiraIMG.value.length - 1; // Volta ao final
   }
 };
 
 onMounted(() => {
   const date = new Date();
-  currentDate.value = date.toLocaleDateString('pt-BR', {
+  frenteCurrentDate.value = date.toLocaleDateString('pt-BR', {
     day: '2-digit',
     month: 'numeric',
     year: 'numeric',
   });
 });
 </script>
+
 
 <template>
   <main>
@@ -53,22 +133,40 @@ onMounted(() => {
           </div>
           <div class="moto">
             <div class="frente">
-              <button @click="prev" class="carrosel-button">❮</button>
+              <button @click="frentePrev" class="carrosel-button">❮</button>
               <div class="grupo">
-                <div v-for="(frent, index) in frenteIMG" v-show="index === currentIndex" :key="index" class="frenteIMG">
+                <div v-for="(frent, index) in frenteIMG" v-show="index === frenteCurrentIndex" :key="index" class="frenteIMG">
                   <img :src="frent.img" :alt="frent.title" />
                 </div>
               </div>
-              <button @click="next" class="carrosel-button">❯</button>
+              <button @click="frenteNext" class="carrosel-button">❯</button>
             </div>
             <div class="motor">
-              <img src="/Motor-1.png" alt="motor" class="logo" />
+              <button @click="motorNext" class="carrosel-buttonMotor">❮</button>
+              <div class="grupo">
+                <div v-for="(motors, index) in motorIMG" v-show="index === motorCurrentIndex" :key="index" class="motorIMG">
+                  <img :src="motors.img" :alt="motors.title" />
+                </div>
+              </div>
+              <button @click="motorNext" class="carrosel-buttonMotor">❯</button>
             </div>
             <div class="rodaFrente">
-              <img src="/RodaFrente-1.png" alt="roda frente" class="logo" />
+              <button @click="rodaFrenteNext" class="carrosel-buttonRodaFrente">❮</button>
+              <div class="grupo">
+                <div v-for="(rodaFrentes, index) in rodaFrenteIMG" v-show="index === rodaFrenteCurrentIndex" :key="index" class="rodaFrenteIMG">
+                  <img :src="rodaFrentes.img" :alt="rodaFrentes.title" />
+                </div>
+              </div>
+              <button @click="rodaFrenteNext" class="carrosel-buttonRodaFrente">❯</button>
             </div>
             <div class="rodaTraseira">
-              <img src="/RodaTraseira-1.png" alt="roda traseira" class="logo" />
+              <button @click="rodaTraseiraNext" class="carrosel-buttonRodaTraseira">❮</button>
+              <div class="grupo">
+                <div v-for="(rodaTraseiras, index) in rodaTraseiraIMG" v-show="index === rodaTraseiraCurrentIndex" :key="index" class="rodaTraseiraIMG">
+                  <img :src="rodaTraseiras.img" :alt="rodaTraseiras.title" />
+                </div>
+              </div>
+              <button @click="rodaTraseiraNext" class="carrosel-buttonRodaTraseira">❯</button>
             </div>
           </div>
         </div>
@@ -192,22 +290,137 @@ onMounted(() => {
   margin-top: 0.5rem;
   color: black;
 }
+/* motor */
+
+.carrosel-buttonMotor {
+  background-color: rgba(128, 128, 128, 0.623);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 20px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carrosel-buttonMotor:first-of-type { /* Botão anterior à esquerda */
+  left: 36%; /* Ajuste conforme necessário */
+}
+
+.carrosel-buttonMotor:last-of-type { /* Botão próximo à direita */
+  right: 36%; /* Ajuste conforme necessário */
+}
+
+.motorIMG img {
+  width: 140px;
+  height: auto;
+  border-radius: 3%;
+}
+
+.motorIMG h3 {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: black;
+}
+/* roda frente */
+
+.carrosel-buttonRodaFrente {
+  background-color: rgba(128, 128, 128, 0.623);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 20px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carrosel-buttonRodaFrente:first-of-type { /* Botão anterior à esquerda */
+  left: 39%; /* Ajuste conforme necessário */
+}
+
+.carrosel-buttonRodaFrente:last-of-type { /* Botão próximo à direita */
+  right: 39%; /* Ajuste conforme necessário */
+}
+
+.rodaFrenteIMG img {
+  width: 140px;
+  height: auto;
+  border-radius: 3%;
+}
+
+.rodaFrenteIMG h3 {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: black;
+}
+
+/* roda TRASEIRA */
+
+.carrosel-buttonRodaTraseira {
+  background-color: rgba(128, 128, 128, 0.623);
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 20px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.carrosel-buttonRodaTraseira:first-of-type { /* Botão anterior à esquerda */
+  left: 40%; /* Ajuste conforme necessário */
+}
+
+.carrosel-buttonRodaTraseira:last-of-type { /* Botão próximo à direita */
+  right: 41%; /* Ajuste conforme necessário */
+}
+
+.rodaTraseiraIMG img {
+  width: 140px;
+  height: auto;
+  border-radius: 3%;
+}
+
+.rodaTraseiraIMG h3 {
+  text-align: center;
+  margin-top: 0.5rem;
+  color: black;
+}
 
 .rodaTraseira {
   top: 37%;
-  left: 50%;
+  left: 20%;
   width: 90%;
 }
 
 .rodaFrente {
   bottom: 26%;
-  left: 24%;
+  left: -20%;
   width: 80%;
 }
 
 .motor {
   bottom: 30%;
-  left: 39%;
+  left: 12%;
   width: 60%;
 }
 </style>
