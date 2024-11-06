@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-
+//parte da frente
 const frenteCurrentDate = ref('');
 const frenteCurrentIndex = ref(0);
 const frenteIMG = ref([
-  { img: '/Frente-1.png', title: 'Cross Rider' },
+  { img: '/Frente-2.png', title: 'Cross Rider' },
   { img: '/Frente-7.png', title: 'Cross Rider' },
   { img: '/Frente-3.png', title: 'Cross Rider' },
 ]);
@@ -31,7 +31,7 @@ const frentePrev = () => {
 const motorCurrentDate = ref('');
 const motorCurrentIndex = ref(0);
 const motorIMG = ref([
-  { img: '/Motor-1.png', title: 'Cross Rider' },
+  { img: '/Motor-3.png', title: 'Cross Rider' },
   { img: '/Motor-5.png', title: 'Cross Rider' },
   { img: '/Motor-7.png', title: 'Cross Rider' },
 ]);
@@ -57,7 +57,7 @@ const motorPrev = () => {
 const rodaFrenteCurrentDate = ref('');
 const rodaFrenteCurrentIndex = ref(0);
 const rodaFrenteIMG = ref([
-  { img: '/RodaFrente-1.png', title: 'Cross Rider' },
+  { img: '/RodaFrente-6.png', title: 'Cross Rider' },
   { img: '/RodaFrente-4.png', title: 'Cross Rider' },
   { img: '/RodaFrente-7.png', title: 'Cross Rider' },
 ]);
@@ -83,7 +83,7 @@ const rodaFrentePrev = () => {
 const rodaTraseiraCurrentDate = ref('');
 const rodaTraseiraCurrentIndex = ref(0);
 const rodaTraseiraIMG = ref([
-  { img: '/RodaTraseira-1.png', title: 'Cross Rider' },
+  { img: '/RodaTraseira-3.jpg', title: 'Cross Rider' },
   { img: '/RodaTraseira-6.png', title: 'Cross Rider' },
   { img: '/RodaTraseira-7.png', title: 'Cross Rider' },
 ]);
@@ -129,7 +129,7 @@ onMounted(() => {
         </div>
         <div class="main">
           <div class="titulo">
-            <h1>Ghost Rider 900</h1>
+            <h1>City 300</h1>
           </div>
           <div class="moto">
             <div class="frente">
@@ -307,7 +307,7 @@ onMounted(() => {
   font-size: 1rem;
   cursor: pointer;
   width: 100px; 
-  height: 20px;
+  height: 20px; 
   display: flex;
   align-items: center;
   justify-content: center;
@@ -324,7 +324,7 @@ onMounted(() => {
 }
 
 .motorIMG img {
-  width: 100px;
+  width: 100px; 
   height: auto;
   border-radius: 3%;
 }

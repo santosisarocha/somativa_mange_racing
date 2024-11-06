@@ -1,21 +1,24 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router'; // Importar o router
 
-// Obtenha a data atual
+const router = useRouter(); // Criar uma instância do router
+
 const currentDate = ref('');
-const currentIndex = ref(0); // índice atual do carrossel
+const currentIndex = ref(0); 
 const items = ref([
-  { img: '/Group40.png', title: 'Cross Rider' },
-  { img: '/Group41.png', title: 'Nimbus' },
-  { img: '/Group42.png', title: 'Traveler' },
-  // Adicione mais itens conforme necessário
+  { img: '/Group40.png', title: 'Cross Rider', route: '/creteCross' },
+  { img: '/Group41.png', title: 'Nimbus', route: '/creteSpeedester' },
+  { img: '/Group42.png', title: 'Traveler', route: '/creteTraveler' },
+  { img: '/Ghost.png', title: 'Ghost', route: '/creteGhost' },
+  { img: '/city.png', title: 'City', route: '/creteCity' },
 ]);
 
 const next = () => {
   if (currentIndex.value < items.value.length - 1) {
     currentIndex.value++;
   } else {
-    currentIndex.value = 0; // Volta ao início
+    currentIndex.value = 0;
   }
 };
 
@@ -23,8 +26,12 @@ const prev = () => {
   if (currentIndex.value > 0) {
     currentIndex.value--;
   } else {
-    currentIndex.value = items.value.length - 1; // Volta ao final
+    currentIndex.value = items.value.length - 1; 
   }
+};
+
+const goToRoute = (route: string) => {
+  router.push(route); 
 };
 
 onMounted(() => {
@@ -36,6 +43,7 @@ onMounted(() => {
   });
 });
 </script>
+
 
 <template>
   <main>
@@ -62,7 +70,7 @@ onMounted(() => {
       <button @click="prev" class="carrosel-button">❮</button>
       <div class="grupo">
         <div v-for="(item, index) in items" v-show="index === currentIndex" :key="index" class="item">
-          <img :src="item.img" :alt="item.title" />
+          <img :src="item.img" :alt="item.title" @click="goToRoute(item.route)" />
           <h3>{{ item.title }}</h3>
         </div>
       </div>
@@ -87,7 +95,7 @@ main {
   padding: 0;
   height: 100vh;
   width: 130vh;
-  overflow-x: hidden; /* Impede o scroll horizontal */
+  overflow-x: hidden; 
 }
 
 
@@ -100,10 +108,10 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem; /* Adiciona espaçamento horizontal */
+  padding: 1rem 2rem; 
   margin-top: 0;
   background-color: white;
-  max-width: 100%; /* Define uma largura máxima */
+  max-width: 100%; 
   margin-left: auto;
   margin-right: auto;
 }
@@ -123,10 +131,10 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem; /* Adiciona espaçamento horizontal */
+  padding: 1rem 2rem; 
   margin-top: 0;
   background-color: white;
-  max-width: 100%; /* Define uma largura máxima */
+  max-width: 100%; 
   margin-left: auto;
   margin-right: auto;
 }
