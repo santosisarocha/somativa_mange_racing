@@ -1,116 +1,69 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-//parte da frente
-const frenteCurrentDate = ref('');
+// Variáveis para dados de imagens do Cross Rider
+const frenteIMG = ref([]);
+const motorIMG = ref([]);
+const rodaFrenteIMG = ref([]);
+const rodaTraseiraIMG = ref([]);
+
+// Índices de controle de navegação das imagens
 const frenteCurrentIndex = ref(0);
-const frenteIMG = ref([
-  { img: '/Frente-2.png', title: 'Cross Rider' },
-  { img: '/Frente-7.png', title: 'Cross Rider' },
-  { img: '/Frente-3.png', title: 'Cross Rider' },
-]);
-
-const frenteNext = () => {
-  if (frenteCurrentIndex.value < frenteIMG.value.length - 1) {
-    frenteCurrentIndex.value++;
-  } else {
-    frenteCurrentIndex.value = 0; 
-  }
-};
-
-const frentePrev = () => {
-  if (frenteCurrentIndex.value > 0) {
-    frenteCurrentIndex.value--;
-  } else {
-    frenteCurrentIndex.value = frenteIMG.value.length - 1; 
-  }
-};
-
-// parte do motor 
-
-const motorCurrentDate = ref('');
 const motorCurrentIndex = ref(0);
-const motorIMG = ref([
-  { img: '/Motor-3.png', title: 'Cross Rider' },
-  { img: '/Motor-5.png', title: 'Cross Rider' },
-  { img: '/Motor-7.png', title: 'Cross Rider' },
-]);
+const rodaFrenteCurrentIndex = ref(0);
+const rodaTraseiraCurrentIndex = ref(0);
+
+// Funções de navegação para as imagens
+const frenteNext = () => {
+  frenteCurrentIndex.value = (frenteCurrentIndex.value + 1) % frenteIMG.value.length;
+};
+const frentePrev = () => {
+  frenteCurrentIndex.value = (frenteCurrentIndex.value - 1 + frenteIMG.value.length) % frenteIMG.value.length;
+};
 
 const motorNext = () => {
-  if (motorCurrentIndex.value < motorIMG.value.length - 1) {
-    motorCurrentIndex.value++;
-  } else {
-    motorCurrentIndex.value = 0; 
-  }
+  motorCurrentIndex.value = (motorCurrentIndex.value + 1) % motorIMG.value.length;
 };
-
 const motorPrev = () => {
-  if (motorCurrentIndex.value > 0) {
-    motorCurrentIndex.value--;
-  } else {
-    motorCurrentIndex.value = motorIMG.value.length - 1; 
-  }
+  motorCurrentIndex.value = (motorCurrentIndex.value - 1 + motorIMG.value.length) % motorIMG.value.length;
 };
-
-//rodaFrente
-
-const rodaFrenteCurrentDate = ref('');
-const rodaFrenteCurrentIndex = ref(0);
-const rodaFrenteIMG = ref([
-  { img: '/RodaFrente-6.png', title: 'Cross Rider' },
-  { img: '/RodaFrente-4.png', title: 'Cross Rider' },
-  { img: '/RodaFrente-7.png', title: 'Cross Rider' },
-]);
 
 const rodaFrenteNext = () => {
-  if (rodaFrenteCurrentIndex.value <rodaFrenteIMG.value.length - 1) {
-    rodaFrenteCurrentIndex.value++;
-  } else {
-    rodaFrenteCurrentIndex.value = 0; 
-  }
+  rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value + 1) % rodaFrenteIMG.value.length;
 };
-
 const rodaFrentePrev = () => {
-  if (rodaFrenteCurrentIndex.value > 0) {
-    rodaFrenteCurrentIndex.value--;
-  } else {
-    rodaFrenteCurrentIndex.value = rodaFrenteIMG.value.length - 1; 
-  }
+  rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value - 1 + rodaFrenteIMG.value.length) % rodaFrenteIMG.value.length;
 };
-
-//rodaTraseira
-
-const rodaTraseiraCurrentDate = ref('');
-const rodaTraseiraCurrentIndex = ref(0);
-const rodaTraseiraIMG = ref([
-  { img: '/RodaTraseira-3.jpg', title: 'Cross Rider' },
-  { img: '/RodaTraseira-6.png', title: 'Cross Rider' },
-  { img: '/RodaTraseira-7.png', title: 'Cross Rider' },
-]);
 
 const rodaTraseiraNext = () => {
-  if (rodaTraseiraCurrentIndex.value <rodaTraseiraIMG.value.length - 1) {
-    rodaTraseiraCurrentIndex.value++;
-  } else {
-    rodaTraseiraCurrentIndex.value = 0; 
-  }
+  rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value + 1) % rodaTraseiraIMG.value.length;
 };
-
 const rodaTraseiraPrev = () => {
-  if (rodaTraseiraCurrentIndex.value > 0) {
-    rodaTraseiraCurrentIndex.value--;
-  } else {
-    rodaTraseiraCurrentIndex.value = rodaTraseiraIMG.value.length - 1; 
+  rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value - 1 + rodaTraseiraIMG.value.length) % rodaTraseiraIMG.value.length;
+};
+
+// Função para buscar e filtrar dados do db.json
+const fetchImages = async () => {
+  try {
+    const fetchAndFilter = async (url: string, filter: string) => {
+      const response = await fetch(url);
+      const data = await response.json();
+      return data.filter((item: any) => item.title.includes(filter));
+    };
+
+    frenteIMG.value = await fetchAndFilter("http://localhost:3000/frenteIMG", "City");
+    motorIMG.value = await fetchAndFilter("http://localhost:3000/motorIMG", "City");
+    rodaFrenteIMG.value = await fetchAndFilter("http://localhost:3000/rodaFrenteIMG", "City");
+    rodaTraseiraIMG.value = await fetchAndFilter("http://localhost:3000/rodaTraseiraIMG", "City");
+
+  } catch (error) {
+    console.error("Erro ao carregar imagens:", error);
   }
 };
 
+// Chamada da função de busca ao montar o componente
 onMounted(() => {
-  const date = new Date();
-  frenteCurrentDate.value = date.toLocaleDateString('pt-BR', {
-    day: '2-digit',
-    month: 'numeric',
-    year: 'numeric',
-  });
+  fetchImages();
 });
 </script>
 

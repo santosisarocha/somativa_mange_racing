@@ -1,110 +1,85 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 
-
+// Definindo os refs para armazenar as imagens e os índices de cada seção
 const frenteCurrentDate = ref('');
 const frenteCurrentIndex = ref(0);
-const frenteIMG = ref([
-  { img: '/Frente-1.png', title: 'Cross Rider' },
-  { img: '/Frente-7.png', title: 'Cross Rider' },
-  { img: '/Frente-3.png', title: 'Cross Rider' },
-]);
+const frenteIMG = ref([]);
 
-const frenteNext = () => {
-  if (frenteCurrentIndex.value < frenteIMG.value.length - 1) {
-    frenteCurrentIndex.value++;
-  } else {
-    frenteCurrentIndex.value = 0; 
+const motorCurrentIndex = ref(0);
+const motorIMG = ref([]);
+
+const rodaFrenteCurrentIndex = ref(0);
+const rodaFrenteIMG = ref([]);
+
+const rodaTraseiraCurrentIndex = ref(0);
+const rodaTraseiraIMG = ref([]);
+
+// Função para buscar as imagens do servidor e filtrar apenas com `title: "Ghost"`
+const fetchImages = async () => {
+  try {
+    const [frenteResponse, motorResponse, rodaFrenteResponse, rodaTraseiraResponse] = await Promise.all([
+      fetch('http://localhost:3000/frenteIMG'),
+      fetch('http://localhost:3000/motorIMG'),
+      fetch('http://localhost:3000/rodaFrenteIMG'),
+      fetch('http://localhost:3000/rodaTraseiraIMG')
+    ]);
+
+    if (!frenteResponse.ok || !motorResponse.ok || !rodaFrenteResponse.ok || !rodaTraseiraResponse.ok) {
+      throw new Error('Erro ao buscar os dados');
+    }
+
+    const frenteData = await frenteResponse.json();
+    const motorData = await motorResponse.json();
+    const rodaFrenteData = await rodaFrenteResponse.json();
+    const rodaTraseiraData = await rodaTraseiraResponse.json();
+
+    // Filtra para pegar apenas os itens com title "Ghost"
+    frenteIMG.value = frenteData.filter(img => img.title === "Ghost");
+    motorIMG.value = motorData.filter(img => img.title === "Ghost");
+    rodaFrenteIMG.value = rodaFrenteData.filter(img => img.title === "Ghost");
+    rodaTraseiraIMG.value = rodaTraseiraData.filter(img => img.title === "Ghost");
+  } catch (error) {
+    console.error("Erro ao carregar imagens:", error);
   }
+};
+
+// Funções de navegação para cada carrossel
+const frenteNext = () => {
+  frenteCurrentIndex.value = (frenteCurrentIndex.value + 1) % frenteIMG.value.length;
 };
 
 const frentePrev = () => {
-  if (frenteCurrentIndex.value > 0) {
-    frenteCurrentIndex.value--;
-  } else {
-    frenteCurrentIndex.value = frenteIMG.value.length - 1; 
-  }
+  frenteCurrentIndex.value = (frenteCurrentIndex.value - 1 + frenteIMG.value.length) % frenteIMG.value.length;
 };
 
-// parte do motor 
-
-const motorCurrentDate = ref('');
-const motorCurrentIndex = ref(0);
-const motorIMG = ref([
-  { img: '/Motor-1.png', title: 'Cross Rider' },
-  { img: '/Motor-5.png', title: 'Cross Rider' },
-  { img: '/Motor-7.png', title: 'Cross Rider' },
-]);
-
 const motorNext = () => {
-  if (motorCurrentIndex.value < motorIMG.value.length - 1) {
-    motorCurrentIndex.value++;
-  } else {
-    motorCurrentIndex.value = 0; 
-  }
+  motorCurrentIndex.value = (motorCurrentIndex.value + 1) % motorIMG.value.length;
 };
 
 const motorPrev = () => {
-  if (motorCurrentIndex.value > 0) {
-    motorCurrentIndex.value--;
-  } else {
-    motorCurrentIndex.value = motorIMG.value.length - 1; 
-  }
+  motorCurrentIndex.value = (motorCurrentIndex.value - 1 + motorIMG.value.length) % motorIMG.value.length;
 };
 
-//rodaFrente
-
-const rodaFrenteCurrentDate = ref('');
-const rodaFrenteCurrentIndex = ref(0);
-const rodaFrenteIMG = ref([
-  { img: '/RodaFrente-1.png', title: 'Cross Rider' },
-  { img: '/RodaFrente-4.png', title: 'Cross Rider' },
-  { img: '/RodaFrente-7.png', title: 'Cross Rider' },
-]);
-
 const rodaFrenteNext = () => {
-  if (rodaFrenteCurrentIndex.value <rodaFrenteIMG.value.length - 1) {
-    rodaFrenteCurrentIndex.value++;
-  } else {
-    rodaFrenteCurrentIndex.value = 0; 
-  }
+  rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value + 1) % rodaFrenteIMG.value.length;
 };
 
 const rodaFrentePrev = () => {
-  if (rodaFrenteCurrentIndex.value > 0) {
-    rodaFrenteCurrentIndex.value--;
-  } else {
-    rodaFrenteCurrentIndex.value = rodaFrenteIMG.value.length - 1; 
-  }
+  rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value - 1 + rodaFrenteIMG.value.length) % rodaFrenteIMG.value.length;
 };
 
-//rodaTraseira
-
-const rodaTraseiraCurrentDate = ref('');
-const rodaTraseiraCurrentIndex = ref(0);
-const rodaTraseiraIMG = ref([
-  { img: '/RodaTraseira-1.png', title: 'Cross Rider' },
-  { img: '/RodaTraseira-6.png', title: 'Cross Rider' },
-  { img: '/RodaTraseira-7.png', title: 'Cross Rider' },
-]);
-
 const rodaTraseiraNext = () => {
-  if (rodaTraseiraCurrentIndex.value <rodaTraseiraIMG.value.length - 1) {
-    rodaTraseiraCurrentIndex.value++;
-  } else {
-    rodaTraseiraCurrentIndex.value = 0; 
-  }
+  rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value + 1) % rodaTraseiraIMG.value.length;
 };
 
 const rodaTraseiraPrev = () => {
-  if (rodaTraseiraCurrentIndex.value > 0) {
-    rodaTraseiraCurrentIndex.value--;
-  } else {
-    rodaTraseiraCurrentIndex.value = rodaTraseiraIMG.value.length - 1; 
-  }
+  rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value - 1 + rodaTraseiraIMG.value.length) % rodaTraseiraIMG.value.length;
 };
 
+// Chamando a função fetchImages e definindo a data ao montar o componente
 onMounted(() => {
+  fetchImages();
   const date = new Date();
   frenteCurrentDate.value = date.toLocaleDateString('pt-BR', {
     day: '2-digit',
@@ -113,7 +88,6 @@ onMounted(() => {
   });
 });
 </script>
-
 
 <template>
   <main>
@@ -142,7 +116,7 @@ onMounted(() => {
               <button @click="frenteNext" class="carrosel-button">❯</button>
             </div>
             <div class="motor">
-              <button @click="motorNext" class="carrosel-buttonMotor">^</button>
+              <button @click="motorPrev" class="carrosel-buttonMotor">^</button>
               <div class="grupo">
                 <div v-for="(motors, index) in motorIMG" v-show="index === motorCurrentIndex" :key="index" class="motorIMG">
                   <img :src="motors.img" :alt="motors.title" />
@@ -151,7 +125,7 @@ onMounted(() => {
               <button @click="motorNext" class="carrosel-buttonMotor">v</button>
             </div>
             <div class="rodaFrente">
-              <button @click="rodaFrenteNext" class="carrosel-buttonRodaFrente">❮</button>
+              <button @click="rodaFrentePrev" class="carrosel-buttonRodaFrente">❮</button>
               <div class="grupo">
                 <div v-for="(rodaFrentes, index) in rodaFrenteIMG" v-show="index === rodaFrenteCurrentIndex" :key="index" class="rodaFrenteIMG">
                   <img :src="rodaFrentes.img" :alt="rodaFrentes.title" />
@@ -160,7 +134,7 @@ onMounted(() => {
               <button @click="rodaFrenteNext" class="carrosel-buttonRodaFrente">❯</button>
             </div>
             <div class="rodaTraseira">
-              <button @click="rodaTraseiraNext" class="carrosel-buttonRodaTraseira">❮</button>
+              <button @click="rodaTraseiraPrev" class="carrosel-buttonRodaTraseira">❮</button>
               <div class="grupo">
                 <div v-for="(rodaTraseiras, index) in rodaTraseiraIMG" v-show="index === rodaTraseiraCurrentIndex" :key="index" class="rodaTraseiraIMG">
                   <img :src="rodaTraseiras.img" :alt="rodaTraseiras.title" />
@@ -174,6 +148,7 @@ onMounted(() => {
     </div>
   </main>
 </template>
+
 
 <style scoped>
 .computed {
