@@ -6,6 +6,7 @@ import CreteCity from '@/views/CreteCity.vue'
 import CreateCross from '@/views/CreateCross.vue'
 import CreateTraveler from '@/views/CreateTraveler.vue'
 import Login from '@/views/Login.vue'
+import Admin from '@/views/Admin.vue'
 
 
 const router = createRouter({
@@ -45,6 +46,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: Login
+    },
+    {
+      path: '/admin',
+      name: 'admin',
+      component: Admin
     }
   ]
 })

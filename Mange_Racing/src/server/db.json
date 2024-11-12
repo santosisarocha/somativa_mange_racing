@@ -1,58 +1,412 @@
 {
-    "users": [
-      {
-        "id": 1,
-        "email": "santosisabelarocha@gmail.com",
-        "password": "isabela123"
-      }
-    ],
-    "frenteIMG": [
-      { "img": "/Frente-5.png", "title": "Nimbus" },
-      { "img": "/Frente-7.png", "title": "Ghost" },
-      { "img": "/Frente-3.png", "title": "Ghost" },
-      { "img": "/Frente-1.png", "title": "Ghost" },
-      { "img": "/Frente-6.png", "title": "Traveler" },
-      { "img": "/Frente-2.png", "title": "City" },
-      { "img": "/Frente-4.png", "title": "Cross Rider" }
-
-
-
-    ],
+  "users": [
+    {
+      "id": 1,
+      "email": "santosisabelarocha@gmail.com",
+      "password": "isabela123"
+    }
+  ],
+  "frenteIMG": [
+    {
+      "img": "/Frente-5.png",
+      "title": "Nimbus"
+    },
+    {
+      "img": "/Frente-7.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/Frente-3.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/Frente-1.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/Frente-6.png",
+      "title": "Traveler"
+    },
+    {
+      "img": "/Frente-2.png",
+      "title": "City"
+    },
+    {
+      "img": "/Frente-4.png",
+      "title": "Cross Rider"
+    }
+  ],
   "motorIMG": [
-      { "img": "/Motor-2.png", "title": "Nimbus" },
-      { "img": "/Motor-5.png", "title": "Ghost" },
-      { "img": "/Motor-7.png", "title": "Ghost" },
-      { "img": "/Motor-1.png", "title": "Ghost" },
-      { "img": "/Motor-6.png", "title": "Traveler" },
-      { "img": "/Motor-3.png", "title": "City" },
-      { "img": "/Motor-4.png", "title": "Cross Rider" }
-
-
-
-    ],
+    {
+      "img": "/Motor-2.png",
+      "title": "Nimbus"
+    },
+    {
+      "img": "/Motor-5.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/Motor-7.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/Motor-1.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/Motor-6.png",
+      "title": "Traveler"
+    },
+    {
+      "img": "/Motor-3.png",
+      "title": "City"
+    },
+    {
+      "img": "/Motor-4.png",
+      "title": "Cross Rider"
+    }
+  ],
   "rodaFrenteIMG": [
-      { "img": "/RodaFrente-2.png", "title": "Nimbus" },
-      { "img": "/RodaFrente-4.png", "title": "Ghost" },
-      { "img": "/RodaFrente-7.png", "title": "Ghost" },
-      { "img": "/RodaFrente-1.png", "title": "Ghost" },
-      { "img": "/RodaFrente-5.png", "title": "Traveler" },
-      { "img": "/RodaFrente-6.png", "title": "City" },
-      { "img": "/RodaFrente-3.png", "title": "Cross Rider" }
-
-    ],
+    {
+      "img": "/RodaFrente-2.png",
+      "title": "Nimbus"
+    },
+    {
+      "img": "/RodaFrente-4.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/RodaFrente-7.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/RodaFrente-1.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/RodaFrente-5.png",
+      "title": "Traveler"
+    },
+    {
+      "img": "/RodaFrente-6.png",
+      "title": "City"
+    },
+    {
+      "img": "/RodaFrente-3.png",
+      "title": "Cross Rider"
+    }
+  ],
   "rodaTraseiraIMG": [
-      { "img": "/RodaTraseira-2.png", "title": "Nimbus" },
-      { "img": "/RodaTraseira-6.png", "title": "Ghost" },
-      { "img": "/RodaTraseira-7.png", "title": "Ghost" },
-      { "img": "/RodaTraseira-1.png", "title": "Ghost" },
-      { "img": "/RodaTraseira-5.png", "title": "Traveler" },
-      { "img": "/RodaTraseira-3.jpg", "title": "City" },
-      { "img": "/RodaTraseira-4.png", "title": "Cross Rider" }
-
-
-
-
-    ]
-  
-  }
-  
+    {
+      "img": "/RodaTraseira-2.png",
+      "title": "Nimbus"
+    },
+    {
+      "img": "/RodaTraseira-6.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/RodaTraseira-7.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/RodaTraseira-1.png",
+      "title": "Ghost"
+    },
+    {
+      "img": "/RodaTraseira-5.png",
+      "title": "Traveler"
+    },
+    {
+      "img": "/RodaTraseira-3.jpg",
+      "title": "City"
+    },
+    {
+      "img": "/RodaTraseira-4.png",
+      "title": "Cross Rider"
+    }
+  ],
+  "compras": [
+    {
+      "images": {
+        "frenteIMG": [
+          {
+            "img": "/Frente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-3.png",
+            "title": "Ghost"
+          }
+        ],
+        "motorIMG": [
+          {
+            "img": "/Motor-5.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaFrenteIMG": [
+          {
+            "img": "/RodaFrente-4.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaTraseiraIMG": [
+          {
+            "img": "/RodaTraseira-6.png",
+            "title": "Ghost"
+          }
+        ]
+      },
+      "date": "2024-11-11T10:00:00.000Z"
+    },
+    {
+      "id": "2f71",
+      "images": {
+        "frenteIMG": [
+          {
+            "img": "/Frente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-3.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "motorIMG": [
+          {
+            "img": "/Motor-5.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaFrenteIMG": [
+          {
+            "img": "/RodaFrente-4.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaTraseiraIMG": [
+          {
+            "img": "/RodaTraseira-6.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-1.png",
+            "title": "Ghost"
+          }
+        ]
+      },
+      "date": "2024-11-12T01:09:55.186Z"
+    },
+    {
+      "id": "b80d",
+      "images": {
+        "frenteIMG": [
+          {
+            "img": "/Frente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-3.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "motorIMG": [
+          {
+            "img": "/Motor-5.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaFrenteIMG": [
+          {
+            "img": "/RodaFrente-4.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaTraseiraIMG": [
+          {
+            "img": "/RodaTraseira-6.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-1.png",
+            "title": "Ghost"
+          }
+        ]
+      },
+      "date": "2024-11-12T01:09:56.884Z"
+    },
+    {
+      "id": "326b",
+      "images": {
+        "frenteIMG": [
+          {
+            "img": "/Frente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-3.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "motorIMG": [
+          {
+            "img": "/Motor-5.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaFrenteIMG": [
+          {
+            "img": "/RodaFrente-4.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaTraseiraIMG": [
+          {
+            "img": "/RodaTraseira-6.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-1.png",
+            "title": "Ghost"
+          }
+        ]
+      },
+      "date": "2024-11-12T01:09:57.708Z"
+    },
+    {
+      "id": "aaf8",
+      "images": {
+        "frenteIMG": [
+          {
+            "img": "/Frente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-3.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Frente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "motorIMG": [
+          {
+            "img": "/Motor-5.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/Motor-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaFrenteIMG": [
+          {
+            "img": "/RodaFrente-4.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaFrente-1.png",
+            "title": "Ghost"
+          }
+        ],
+        "rodaTraseiraIMG": [
+          {
+            "img": "/RodaTraseira-6.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-7.png",
+            "title": "Ghost"
+          },
+          {
+            "img": "/RodaTraseira-1.png",
+            "title": "Ghost"
+          }
+        ]
+      },
+      "date": "2024-11-12T01:09:59.579Z"
+    }
+  ]
+}

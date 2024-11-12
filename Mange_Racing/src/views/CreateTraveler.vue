@@ -1,22 +1,55 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useImageStore } from '../stores/useImageStore';
 
-// Variáveis para dados de imagens do Cross Rider
+// Definindo os refs para armazenar as imagens e os índices de cada seção
+const frenteCurrentDate = ref('');
+const frenteCurrentIndex = ref(0);
 const frenteIMG = ref([]);
+
+const motorCurrentIndex = ref(0);
 const motorIMG = ref([]);
+
+const rodaFrenteCurrentIndex = ref(0);
 const rodaFrenteIMG = ref([]);
+
+const rodaTraseiraCurrentIndex = ref(0);
 const rodaTraseiraIMG = ref([]);
 
-// Índices de controle de navegação das imagens
-const frenteCurrentIndex = ref(0);
-const motorCurrentIndex = ref(0);
-const rodaFrenteCurrentIndex = ref(0);
-const rodaTraseiraCurrentIndex = ref(0);
+// Função para buscar as imagens do servidor e filtrar apenas com `title: "Traveler"`
+const fetchImages = async () => {
+  try {
+    const [frenteResponse, motorResponse, rodaFrenteResponse, rodaTraseiraResponse] = await Promise.all([
+      fetch('http://localhost:3000/frenteIMG'),
+      fetch('http://localhost:3000/motorIMG'),
+      fetch('http://localhost:3000/rodaFrenteIMG'),
+      fetch('http://localhost:3000/rodaTraseiraIMG')
+    ]);
 
-// Funções de navegação para as imagens
+    if (!frenteResponse.ok || !motorResponse.ok || !rodaFrenteResponse.ok || !rodaTraseiraResponse.ok) {
+      throw new Error('Erro ao buscar os dados');
+    }
+
+    const frenteData = await frenteResponse.json();
+    const motorData = await motorResponse.json();
+    const rodaFrenteData = await rodaFrenteResponse.json();
+    const rodaTraseiraData = await rodaTraseiraResponse.json();
+
+    // Filtra para pegar apenas os itens com title "Traveler"
+    frenteIMG.value = frenteData.filter(img => img.title === "Traveler");
+    motorIMG.value = motorData.filter(img => img.title === "Traveler");
+    rodaFrenteIMG.value = rodaFrenteData.filter(img => img.title === "Traveler");
+    rodaTraseiraIMG.value = rodaTraseiraData.filter(img => img.title === "Traveler");
+  } catch (error) {
+    console.error("Erro ao carregar imagens:", error);
+  }
+};
+
+// Funções de navegação para cada carrossel
 const frenteNext = () => {
   frenteCurrentIndex.value = (frenteCurrentIndex.value + 1) % frenteIMG.value.length;
 };
+
 const frentePrev = () => {
   frenteCurrentIndex.value = (frenteCurrentIndex.value - 1 + frenteIMG.value.length) % frenteIMG.value.length;
 };
@@ -24,6 +57,7 @@ const frentePrev = () => {
 const motorNext = () => {
   motorCurrentIndex.value = (motorCurrentIndex.value + 1) % motorIMG.value.length;
 };
+
 const motorPrev = () => {
   motorCurrentIndex.value = (motorCurrentIndex.value - 1 + motorIMG.value.length) % motorIMG.value.length;
 };
@@ -31,6 +65,7 @@ const motorPrev = () => {
 const rodaFrenteNext = () => {
   rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value + 1) % rodaFrenteIMG.value.length;
 };
+
 const rodaFrentePrev = () => {
   rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value - 1 + rodaFrenteIMG.value.length) % rodaFrenteIMG.value.length;
 };
@@ -38,34 +73,41 @@ const rodaFrentePrev = () => {
 const rodaTraseiraNext = () => {
   rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value + 1) % rodaTraseiraIMG.value.length;
 };
+
 const rodaTraseiraPrev = () => {
   rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value - 1 + rodaTraseiraIMG.value.length) % rodaTraseiraIMG.value.length;
 };
 
-// Função para buscar e filtrar dados do db.json
-const fetchImages = async () => {
-  try {
-    const fetchAndFilter = async (url: string, filter: string) => {
-      const response = await fetch(url);
-      const data = await response.json();
-      return data.filter((item: any) => item.title.includes(filter));
-    };
-
-    frenteIMG.value = await fetchAndFilter("http://localhost:3000/frenteIMG", "Traveler");
-    motorIMG.value = await fetchAndFilter("http://localhost:3000/motorIMG", "Traveler");
-    rodaFrenteIMG.value = await fetchAndFilter("http://localhost:3000/rodaFrenteIMG", "Traveler");
-    rodaTraseiraIMG.value = await fetchAndFilter("http://localhost:3000/rodaTraseiraIMG", "Traveler");
-
-  } catch (error) {
-    console.error("Erro ao carregar imagens:", error);
-  }
+// Função para salvar os dados no Pinia e mostrar no console
+const saveData = () => {
+  const imageStore = useImageStore();
+  
+  // Salvando as imagens no Pinia
+  imageStore.setImages(frenteIMG.value, 'frente');
+  imageStore.setImages(motorIMG.value, 'motor');
+  imageStore.setImages(rodaFrenteIMG.value, 'rodaFrente');
+  imageStore.setImages(rodaTraseiraIMG.value, 'rodaTraseira');
+  
+  // Exibindo no console o que foi salvo
+  console.log('Imagens Salvas:');
+  console.log('Frente:', imageStore.frenteIMG);
+  console.log('Motor:', imageStore.motorIMG);
+  console.log('Roda Frente:', imageStore.rodaFrenteIMG);
+  console.log('Roda Traseira:', imageStore.rodaTraseiraIMG);
 };
 
-// Chamada da função de busca ao montar o componente
+// Chamando a função fetchImages e definindo a data ao montar o componente
 onMounted(() => {
   fetchImages();
+  const date = new Date();
+  frenteCurrentDate.value = date.toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: 'numeric',
+    year: 'numeric',
+  });
 });
 </script>
+
 
 <template>
   <main>
@@ -84,6 +126,7 @@ onMounted(() => {
             <h1>Traveler 600</h1>
           </div>
           <div class="moto">
+            <!-- Seções de carrossel -->
             <div class="frente">
               <button @click="frentePrev" class="carrosel-button">❮</button>
               <div class="grupo">
@@ -123,6 +166,8 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <!-- Botão de Salvar -->
+      <button @click="saveData" class="save-button">Salvar Dados</button>
     </div>
   </main>
 </template>
@@ -374,5 +419,19 @@ onMounted(() => {
   bottom: -11%;
   left: 15%;
   width: 60%;
+}
+.save-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10%;
+}
+
+.save-button:hover {
+  background-color: purple;
 }
 </style>

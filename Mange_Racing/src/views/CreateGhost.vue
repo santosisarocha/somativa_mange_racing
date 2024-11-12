@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useImageStore } from '../stores/useImageStore';
 
 // Definindo os refs para armazenar as imagens e os índices de cada seção
 const frenteCurrentDate = ref('');
@@ -15,7 +16,7 @@ const rodaFrenteIMG = ref([]);
 const rodaTraseiraCurrentIndex = ref(0);
 const rodaTraseiraIMG = ref([]);
 
-// Função para buscar as imagens do servidor e filtrar apenas com `title: "Ghost"`
+// Função para buscar as imagens do servidor e filtrar apenas com `title: "City"`
 const fetchImages = async () => {
   try {
     const [frenteResponse, motorResponse, rodaFrenteResponse, rodaTraseiraResponse] = await Promise.all([
@@ -77,6 +78,46 @@ const rodaTraseiraPrev = () => {
   rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value - 1 + rodaTraseiraIMG.value.length) % rodaTraseiraIMG.value.length;
 };
 
+// Função para salvar os dados no Pinia e mostrar no console
+const saveData = async () => {
+  const imageStore = useImageStore();
+
+  // Dados a serem enviados para o db.json
+  const dataToSave = {
+    frenteIMG: frenteIMG.value,
+    motorIMG: motorIMG.value,
+    rodaFrenteIMG: rodaFrenteIMG.value,
+    rodaTraseiraIMG: rodaTraseiraIMG.value,
+  };
+
+  try {
+    // Envia os dados para o db.json
+    const response = await fetch('http://localhost:3000/compras', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        images: dataToSave, // Dados das imagens
+        date: new Date().toISOString(), // Data do salvamento
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao salvar os dados');
+    }
+
+    // Exibe os dados no console para confirmação
+    console.log('Imagens Salvas com Sucesso!');
+    console.log('Frente:', dataToSave.frenteIMG);
+    console.log('Motor:', dataToSave.motorIMG);
+    console.log('Roda Frente:', dataToSave.rodaFrenteIMG);
+    console.log('Roda Traseira:', dataToSave.rodaTraseiraIMG);
+  } catch (error) {
+    console.error('Erro ao salvar as imagens:', error);
+  }
+};
+
 // Chamando a função fetchImages e definindo a data ao montar o componente
 onMounted(() => {
   fetchImages();
@@ -88,6 +129,7 @@ onMounted(() => {
   });
 });
 </script>
+
 
 <template>
   <main>
@@ -106,6 +148,7 @@ onMounted(() => {
             <h1>Ghost Rider 900</h1>
           </div>
           <div class="moto">
+            <!-- Seções de carrossel -->
             <div class="frente">
               <button @click="frentePrev" class="carrosel-button">❮</button>
               <div class="grupo">
@@ -145,6 +188,8 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <!-- Botão de Salvar -->
+      <button @click="saveData" class="save-button">Salvar Dados</button>
     </div>
   </main>
 </template>
@@ -398,4 +443,19 @@ onMounted(() => {
   left: 15%;
   width: 60%;
 }
+.save-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 20%;
+}
+
+.save-button:hover {
+  background-color: purple;
+}
+
 </style>

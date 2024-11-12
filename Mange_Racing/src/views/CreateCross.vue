@@ -1,18 +1,22 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useImageStore } from '../stores/useImageStore';
 
-// Variáveis para dados de imagens do Cross Rider
+// Definindo os refs para armazenar as imagens e os índices de cada seção
+const frenteCurrentDate = ref('');
+const frenteCurrentIndex = ref(0);
 const frenteIMG = ref([]);
+
+const motorCurrentIndex = ref(0);
 const motorIMG = ref([]);
+
+const rodaFrenteCurrentIndex = ref(0);
 const rodaFrenteIMG = ref([]);
+
+const rodaTraseiraCurrentIndex = ref(0);
 const rodaTraseiraIMG = ref([]);
 
-// Índices de controle de navegação das imagens
-const frenteCurrentIndex = ref(0);
-const motorCurrentIndex = ref(0);
-const rodaFrenteCurrentIndex = ref(0);
-const rodaTraseiraCurrentIndex = ref(0);
-
+// Função para buscar as imagens do servidor e filtrar apenas com `title: "Cross Rider"`
 const fetchImages = async () => {
   try {
     const [frenteResponse, motorResponse, rodaFrenteResponse, rodaTraseiraResponse] = await Promise.all([
@@ -41,10 +45,11 @@ const fetchImages = async () => {
   }
 };
 
-// Funções de navegação (frente, motor, roda frente, roda traseira)
+// Funções de navegação para cada carrossel
 const frenteNext = () => {
   frenteCurrentIndex.value = (frenteCurrentIndex.value + 1) % frenteIMG.value.length;
 };
+
 const frentePrev = () => {
   frenteCurrentIndex.value = (frenteCurrentIndex.value - 1 + frenteIMG.value.length) % frenteIMG.value.length;
 };
@@ -52,6 +57,7 @@ const frentePrev = () => {
 const motorNext = () => {
   motorCurrentIndex.value = (motorCurrentIndex.value + 1) % motorIMG.value.length;
 };
+
 const motorPrev = () => {
   motorCurrentIndex.value = (motorCurrentIndex.value - 1 + motorIMG.value.length) % motorIMG.value.length;
 };
@@ -59,6 +65,7 @@ const motorPrev = () => {
 const rodaFrenteNext = () => {
   rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value + 1) % rodaFrenteIMG.value.length;
 };
+
 const rodaFrentePrev = () => {
   rodaFrenteCurrentIndex.value = (rodaFrenteCurrentIndex.value - 1 + rodaFrenteIMG.value.length) % rodaFrenteIMG.value.length;
 };
@@ -66,16 +73,41 @@ const rodaFrentePrev = () => {
 const rodaTraseiraNext = () => {
   rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value + 1) % rodaTraseiraIMG.value.length;
 };
+
 const rodaTraseiraPrev = () => {
   rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value - 1 + rodaTraseiraIMG.value.length) % rodaTraseiraIMG.value.length;
 };
 
+// Função para salvar os dados no Pinia e mostrar no console
+const saveData = () => {
+  const imageStore = useImageStore();
+  
+  // Salvando as imagens no Pinia
+  imageStore.setImages(frenteIMG.value, 'frente');
+  imageStore.setImages(motorIMG.value, 'motor');
+  imageStore.setImages(rodaFrenteIMG.value, 'rodaFrente');
+  imageStore.setImages(rodaTraseiraIMG.value, 'rodaTraseira');
+  
+  // Exibindo no console o que foi salvo
+  console.log('Imagens Salvas:');
+  console.log('Frente:', imageStore.frenteIMG);
+  console.log('Motor:', imageStore.motorIMG);
+  console.log('Roda Frente:', imageStore.rodaFrenteIMG);
+  console.log('Roda Traseira:', imageStore.rodaTraseiraIMG);
+};
 
-// Chamada da função de busca ao montar o componente
+// Chamando a função fetchImages e definindo a data ao montar o componente
 onMounted(() => {
   fetchImages();
+  const date = new Date();
+  frenteCurrentDate.value = date.toLocaleDateString('pt-BR', {
+    day: '2-digit',
+    month: 'numeric',
+    year: 'numeric',
+  });
 });
 </script>
+
 
 <template>
   <main>
@@ -91,10 +123,10 @@ onMounted(() => {
         </div>
         <div class="main">
           <div class="titulo">
-            <h1>Cross Rider 400</h1>
+            <h1>Cross Rider</h1>
           </div>
           <div class="moto">
-            <!-- Imagem da frente -->
+            <!-- Seções de carrossel -->
             <div class="frente">
               <button @click="frentePrev" class="carrosel-button">❮</button>
               <div class="grupo">
@@ -104,8 +136,6 @@ onMounted(() => {
               </div>
               <button @click="frenteNext" class="carrosel-button">❯</button>
             </div>
-
-            <!-- Imagem do motor -->
             <div class="motor">
               <button @click="motorPrev" class="carrosel-buttonMotor">^</button>
               <div class="grupo">
@@ -115,8 +145,6 @@ onMounted(() => {
               </div>
               <button @click="motorNext" class="carrosel-buttonMotor">v</button>
             </div>
-
-            <!-- Imagem da roda frente -->
             <div class="rodaFrente">
               <button @click="rodaFrentePrev" class="carrosel-buttonRodaFrente">❮</button>
               <div class="grupo">
@@ -126,8 +154,6 @@ onMounted(() => {
               </div>
               <button @click="rodaFrenteNext" class="carrosel-buttonRodaFrente">❯</button>
             </div>
-
-            <!-- Imagem da roda traseira -->
             <div class="rodaTraseira">
               <button @click="rodaTraseiraPrev" class="carrosel-buttonRodaTraseira">❮</button>
               <div class="grupo">
@@ -140,6 +166,8 @@ onMounted(() => {
           </div>
         </div>
       </div>
+      <!-- Botão de Salvar -->
+      <button @click="saveData" class="save-button">Salvar Dados</button>
     </div>
   </main>
 </template>
@@ -393,4 +421,20 @@ onMounted(() => {
   left: 15%;
   width: 60%;
 }
+
+.save-button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-top: 10%;
+}
+
+.save-button:hover {
+  background-color: purple;
+}
+
 </style>
