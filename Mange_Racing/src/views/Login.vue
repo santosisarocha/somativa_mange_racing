@@ -1,11 +1,13 @@
 <script lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const email = ref('');
     const password = ref('');
     const errorMessage = ref('');
+    const router = useRouter();
 
     const login = async () => {
       try {
@@ -18,6 +20,7 @@ export default {
 
         if (user) {
           alert('Login bem-sucedido!');
+          router.push('/home'); 
         } else {
           errorMessage.value = 'Usuário ou senha inválidos';
         }
@@ -35,6 +38,7 @@ export default {
   }
 };
 </script>
+
 
 
 <template>

@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue';
 import { useImageStore } from '../stores/useImageStore';
 
-// Definindo os refs para armazenar as imagens e os índices de cada seção
 const frenteCurrentDate = ref('');
 const frenteCurrentIndex = ref(0);
 const frenteIMG = ref([]);
@@ -16,7 +15,6 @@ const rodaFrenteIMG = ref([]);
 const rodaTraseiraCurrentIndex = ref(0);
 const rodaTraseiraIMG = ref([]);
 
-// Função para buscar as imagens do servidor e filtrar apenas com `title: "City"`
 const fetchImages = async () => {
   try {
     const [frenteResponse, motorResponse, rodaFrenteResponse, rodaTraseiraResponse] = await Promise.all([
@@ -35,7 +33,6 @@ const fetchImages = async () => {
     const rodaFrenteData = await rodaFrenteResponse.json();
     const rodaTraseiraData = await rodaTraseiraResponse.json();
 
-    // Filtra para pegar apenas os itens com title "Ghost"
     frenteIMG.value = frenteData.filter(img => img.title === "Ghost");
     motorIMG.value = motorData.filter(img => img.title === "Ghost");
     rodaFrenteIMG.value = rodaFrenteData.filter(img => img.title === "Ghost");
@@ -45,7 +42,6 @@ const fetchImages = async () => {
   }
 };
 
-// Funções de navegação para cada carrossel
 const frenteNext = () => {
   frenteCurrentIndex.value = (frenteCurrentIndex.value + 1) % frenteIMG.value.length;
 };
@@ -78,11 +74,9 @@ const rodaTraseiraPrev = () => {
   rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value - 1 + rodaTraseiraIMG.value.length) % rodaTraseiraIMG.value.length;
 };
 
-// Função para salvar os dados no Pinia e mostrar no console
 const saveData = async () => {
   const imageStore = useImageStore();
 
-  // Dados a serem enviados para o db.json
   const dataToSave = {
     frenteIMG: frenteIMG.value,
     motorIMG: motorIMG.value,
@@ -91,15 +85,14 @@ const saveData = async () => {
   };
 
   try {
-    // Envia os dados para o db.json
     const response = await fetch('http://localhost:3000/compras', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        images: dataToSave, // Dados das imagens
-        date: new Date().toISOString(), // Data do salvamento
+        images: dataToSave, 
+        date: new Date().toISOString(), 
       }),
     });
 
@@ -107,7 +100,6 @@ const saveData = async () => {
       throw new Error('Erro ao salvar os dados');
     }
 
-    // Exibe os dados no console para confirmação
     console.log('Imagens Salvas com Sucesso!');
     console.log('Frente:', dataToSave.frenteIMG);
     console.log('Motor:', dataToSave.motorIMG);
@@ -118,7 +110,6 @@ const saveData = async () => {
   }
 };
 
-// Chamando a função fetchImages e definindo a data ao montar o componente
 onMounted(() => {
   fetchImages();
   const date = new Date();
@@ -148,7 +139,6 @@ onMounted(() => {
             <h1>Ghost Rider 900</h1>
           </div>
           <div class="moto">
-            <!-- Seções de carrossel -->
             <div class="frente">
               <button @click="frentePrev" class="carrosel-button">❮</button>
               <div class="grupo">
@@ -188,7 +178,6 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <!-- Botão de Salvar -->
       <button @click="saveData" class="save-button">Salvar Dados</button>
     </div>
   </main>

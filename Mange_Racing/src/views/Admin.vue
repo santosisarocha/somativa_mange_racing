@@ -5,9 +5,9 @@ import { useImageStore } from '../stores/useImageStore';
 export default defineComponent({
   setup() {
     const imageStore = useImageStore();
-    const compras = ref<any[]>([]); // Armazenar dados das compras aqui
+    const compras = ref<any[]>([]); 
 
-    // Função para buscar as compras
+
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:3000/compras');
@@ -16,13 +16,12 @@ export default defineComponent({
         }
         const data = await response.json();
         console.log('Dados de compras recebidos:', data);
-        compras.value = data || []; // Garantir que os dados de compras sejam atribuídos
+        compras.value = data || []; 
       } catch (error) {
         console.error('Erro ao carregar compras:', error);
       }
     };
 
-    // Carregar os dados quando o componente for montado
     onMounted(() => {
       fetchData();
       console.log('frenteIMG:', imageStore.frenteIMG);
@@ -31,7 +30,7 @@ export default defineComponent({
       console.log('rodaTraseiraIMG:', imageStore.rodaTraseiraIMG);
     });
 
-    // Computed para acessar as imagens de forma estruturada
+  
     const images = computed(() => ({
       frente: imageStore.frenteIMG || [],
       motor: imageStore.motorIMG || [],
@@ -52,43 +51,48 @@ export default defineComponent({
     <div>
       <h1>Admin Dashboard - Imagens</h1>
 
-      <!-- Tabela de imagens -->
+      
       <table v-if="images.frente.length > 0 || images.motor.length > 0 || images.rodaFrente.length > 0 || images.rodaTraseira.length > 0">
         <thead>
           <tr>
             <th>Tipo</th>
+            <th>ID</th>
             <th>Título</th>
             <th>Imagem</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Exibir imagens da seção Frente -->
+          
           <tr v-for="(image, index) in images.frente" :key="'frente-' + index">
             <td>Frente</td>
+            <td>{{ image.id }}</td>
             <td>{{ image.title }}</td>
             <td><img :src="image.img" alt="Frente Image" width="100" /></td>
           </tr>
-          <!-- Exibir imagens da seção Motor -->
+          
           <tr v-for="(image, index) in images.motor" :key="'motor-' + index">
             <td>Motor</td>
+            <td>{{ image.id }}</td>
             <td>{{ image.title }}</td>
             <td><img :src="image.img" alt="Motor Image" width="100" /></td>
           </tr>
-          <!-- Exibir imagens da seção Roda Frente -->
+          
           <tr v-for="(image, index) in images.rodaFrente" :key="'rodaFrente-' + index">
             <td>Roda Frente</td>
+            <td>{{ image.id }}</td>
             <td>{{ image.title }}</td>
             <td><img :src="image.img" alt="Roda Frente Image" width="100" /></td>
           </tr>
-          <!-- Exibir imagens da seção Roda Traseira -->
+          
           <tr v-for="(image, index) in images.rodaTraseira" :key="'rodaTraseira-' + index">
             <td>Roda Traseira</td>
+            <td>{{ image.id }}</td>
             <td>{{ image.title }}</td>
             <td><img :src="image.img" alt="Roda Traseira Image" width="100" /></td>
           </tr>
         </tbody>
       </table>
-      <p v-else></p>
+      <p v-else>Nenhuma imagem disponível.</p>
 
       <h2>Compras</h2>
       <table v-if="compras.length > 0">
@@ -102,12 +106,21 @@ export default defineComponent({
         <tbody>
           <tr v-for="(compra, index) in compras" :key="'compra-' + index">
             <td>{{ compra.id }}</td>
-            <td>{{ new Date(compra.date).toLocaleString() }}</td> <!-- Formatação de data -->
+            <td>{{ new Date(compra.date).toLocaleString() }}</td> 
             <td>
               <div v-if="compra.images">
-                <!-- Exibindo imagens associadas à compra -->
-                <div v-for="(img, idx) in compra.images" :key="'img-' + idx">
-                  <img :src="img.url" :alt="'Imagem ' + idx" width="100" />
+                
+                <div v-for="(img, idx) in compra.images.frenteIMG" :key="'frente-img-' + idx">
+                  <img :src="img.img" :alt="'Imagem Frente ' + idx" width="100" />
+                </div>
+                <div v-for="(img, idx) in compra.images.motorIMG" :key="'motor-img-' + idx">
+                  <img :src="img.img" :alt="'Imagem Motor ' + idx" width="100" />
+                </div>
+                <div v-for="(img, idx) in compra.images.rodaFrenteIMG" :key="'rodaFrente-img-' + idx">
+                  <img :src="img.img" :alt="'Imagem Roda Frente ' + idx" width="100" />
+                </div>
+                <div v-for="(img, idx) in compra.images.rodaTraseiraIMG" :key="'rodaTraseira-img-' + idx">
+                  <img :src="img.img" :alt="'Imagem Roda Traseira ' + idx" width="100" />
                 </div>
               </div>
               <p v-else>Sem imagens</p>
@@ -134,7 +147,8 @@ th, td {
 }
 
 th {
-  background-color: #f4f4f4;
+  background-color: black;
+  color: white;
 }
 
 img {

@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue';
 import { useImageStore } from '../stores/useImageStore';
 
-// Definindo os refs para armazenar as imagens e os índices de cada seção
 const frenteCurrentDate = ref('');
 const frenteCurrentIndex = ref(0);
 const frenteIMG = ref([]);
@@ -16,7 +15,6 @@ const rodaFrenteIMG = ref([]);
 const rodaTraseiraCurrentIndex = ref(0);
 const rodaTraseiraIMG = ref([]);
 
-// Função para buscar as imagens do servidor e filtrar apenas com `title: "Nimbus"`
 const fetchImages = async () => {
   try {
     const [frenteResponse, motorResponse, rodaFrenteResponse, rodaTraseiraResponse] = await Promise.all([
@@ -35,7 +33,6 @@ const fetchImages = async () => {
     const rodaFrenteData = await rodaFrenteResponse.json();
     const rodaTraseiraData = await rodaTraseiraResponse.json();
 
-    // Filtra para pegar apenas os itens com title "Nimbus"
     frenteIMG.value = frenteData.filter(img => img.title === "Nimbus");
     motorIMG.value = motorData.filter(img => img.title === "Nimbus");
     rodaFrenteIMG.value = rodaFrenteData.filter(img => img.title === "Nimbus");
@@ -45,7 +42,6 @@ const fetchImages = async () => {
   }
 };
 
-// Funções de navegação para cada carrossel
 const frenteNext = () => {
   frenteCurrentIndex.value = (frenteCurrentIndex.value + 1) % frenteIMG.value.length;
 };
@@ -78,25 +74,42 @@ const rodaTraseiraPrev = () => {
   rodaTraseiraCurrentIndex.value = (rodaTraseiraCurrentIndex.value - 1 + rodaTraseiraIMG.value.length) % rodaTraseiraIMG.value.length;
 };
 
-// Função para salvar os dados no Pinia e mostrar no console
-const saveData = () => {
+const saveData = async () => {
   const imageStore = useImageStore();
-  
-  // Salvando as imagens no Pinia
-  imageStore.setImages(frenteIMG.value, 'frente');
-  imageStore.setImages(motorIMG.value, 'motor');
-  imageStore.setImages(rodaFrenteIMG.value, 'rodaFrente');
-  imageStore.setImages(rodaTraseiraIMG.value, 'rodaTraseira');
-  
-  // Exibindo no console o que foi salvo
-  console.log('Imagens Salvas:');
-  console.log('Frente:', imageStore.frenteIMG);
-  console.log('Motor:', imageStore.motorIMG);
-  console.log('Roda Frente:', imageStore.rodaFrenteIMG);
-  console.log('Roda Traseira:', imageStore.rodaTraseiraIMG);
+
+  const dataToSave = {
+    frenteIMG: frenteIMG.value,
+    motorIMG: motorIMG.value,
+    rodaFrenteIMG: rodaFrenteIMG.value,
+    rodaTraseiraIMG: rodaTraseiraIMG.value,
+  };
+
+  try {
+    const response = await fetch('http://localhost:3000/compras', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        images: dataToSave, 
+        date: new Date().toISOString(), 
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao salvar os dados');
+    }
+
+    console.log('Imagens Salvas com Sucesso!');
+    console.log('Frente:', dataToSave.frenteIMG);
+    console.log('Motor:', dataToSave.motorIMG);
+    console.log('Roda Frente:', dataToSave.rodaFrenteIMG);
+    console.log('Roda Traseira:', dataToSave.rodaTraseiraIMG);
+  } catch (error) {
+    console.error('Erro ao salvar as imagens:', error);
+  }
 };
 
-// Chamando a função fetchImages e definindo a data ao montar o componente
 onMounted(() => {
   fetchImages();
   const date = new Date();
@@ -123,10 +136,9 @@ onMounted(() => {
         </div>
         <div class="main">
           <div class="titulo">
-            <h1>Ghost Rider 900</h1>
+            <h1>Nimbus 1000</h1>
           </div>
           <div class="moto">
-            <!-- Seções de carrossel -->
             <div class="frente">
               <button @click="frentePrev" class="carrosel-button">❮</button>
               <div class="grupo">
@@ -166,7 +178,6 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <!-- Botão de Salvar -->
       <button @click="saveData" class="save-button">Salvar Dados</button>
     </div>
   </main>

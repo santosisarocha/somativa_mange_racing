@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router'; // Importar o router
+import { useRouter } from 'vue-router'; 
 
-const router = useRouter(); // Criar uma instância do router
+const router = useRouter(); 
 
 const currentDate = ref('');
 const currentIndex = ref(0); 

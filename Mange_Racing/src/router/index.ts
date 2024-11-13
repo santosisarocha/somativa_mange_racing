@@ -14,8 +14,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView
+      name: 'login',
+      component: Login
     },
     {
       path: '/creteGhost',
@@ -43,9 +43,9 @@ const router = createRouter({
       component: CreateTraveler
     },
     {
-      path: '/login',
-      name: 'login',
-      component: Login
+      path: '/home',
+      name: 'home',
+      component: HomeView
     },
     {
       path: '/admin',
